@@ -10,38 +10,53 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 async function syncScan() {
 
   const params = {
-     // Specify which items in the results are returned.
-     FilterExpression: "Id > :s AND Id < :e",
-     // Define the expression attribute value, which are substitutes for the values you want to compare.
-     ExpressionAttributeValues: {
-       ":s": {N: '0'},
-       ":e": {N: '100'}
-     },
-     // Set the projection expression, which are the attributes that you want.
-     ProjectionExpression: "Id",
-     TableName: "ProductCatalog",
+    // Specify which items in the results are returned.
+    //FilterExpression: "Id > :s AND Id < :e",
+    // Define the expression attribute value, which are substitutes for the values you want to compare.
+    // ExpressionAttributeValues: {
+    //   ":s": { N: '0' },
+    //   ":e": { N: '100' }
+    // },
+    // Set the projection expression, which are the attributes that you want.
+    ProjectionExpression: "Id",
+    TableName: "ProductCatalog",
   };
 
   const result2 = await docClient.scan(params).promise();
-  
+
   console.log(result2.Items); // <<--- Your results are here
-  return(result2)
+  return (result2)
 }
 
 
-exports.get = function(event, context, callback) {
+exports.get = async function (event, context, callback) {
   var contents = fs.readFileSync(`public${path.sep}index.html`);
   var ids = ""
-  var res = syncScan();
-  console.log("here 123435");
+  try {
 
-  var jsonRes = JSON.stringify(res, null, 2);
+    var res = await syncScan();
+    console.log("here 123435");
 
-  var result = {
-    statusCode: 200,
-    body: contents.toString() + jsonRes,
-    headers: {'content-type': 'text/html'}
-  };
+    var jsonRes = JSON.stringify(res, null, 2);
 
-  callback(null, result);
+    var result = {
+      statusCode: 200,
+      body: contents.toString() + jsonRes,
+      headers: { 'content-type': 'text/html' }
+    };
+
+    callback(null, result);
+  }
+  catch (err) {
+    var result = {
+      statusCode: 400,
+      body: "error" + JSON.stringify(err, null, 2),
+      headers: { 'content-type': 'text/html' }
+    };
+
+    callback(null, result);
+  }
 };
+
+// var cb = function (a, b) { console.log(b) };
+// exports.get(null, null, cb);
