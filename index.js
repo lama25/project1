@@ -33,13 +33,15 @@ exports.get = function(event, context, callback) {
   var contents = fs.readFileSync(`public${path.sep}index.html`);
   var ids = ""
   var items = syncScan();
-  items.forEach(function (element, index, array) {
+  console.log("here 123435");
+
+  for (const element of items) {
     ids += " " + element.Id['N'];
     console.log(
-        "printing",
-        element.Id
-    );
-  });
+      "printing",
+      element.Id
+  );
+  }
 
   var result = {
     statusCode: 200,
