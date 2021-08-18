@@ -24,6 +24,7 @@ async function syncScan() {
 
   const awsRequest = await docClient.scan(params);
   const result = await awsRequest.promise();
+  
   console.log(result.Items); // <<--- Your results are here
   return(result.Items)
 }
