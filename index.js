@@ -35,9 +35,11 @@ exports.get = function(event, context, callback) {
   var res = syncScan();
   console.log("here 123435");
 
+  var jsonRes = JSON.stringify(res, null, 2);
+
   var result = {
     statusCode: 200,
-    body: contents.toString() + res,
+    body: contents.toString() + jsonRes,
     headers: {'content-type': 'text/html'}
   };
 
