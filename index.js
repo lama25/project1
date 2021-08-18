@@ -10,14 +10,12 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 async function syncScan() {
 
   const params = {
-    // Specify which items in the results are returned.
-    //FilterExpression: "Id > :s AND Id < :e",
-    // Define the expression attribute value, which are substitutes for the values you want to compare.
-    // ExpressionAttributeValues: {
-    //   ":s": { N: '0' },
-    //   ":e": { N: '100' }
-    // },
-    // Set the projection expression, which are the attributes that you want.
+    FilterExpression: "Id > :s AND Id < :e",
+    
+    ExpressionAttributeValues: {
+      ":s": 0,
+      ":e": 100
+    },
     ProjectionExpression: "Id",
     TableName: "ProductCatalog",
   };
@@ -58,5 +56,5 @@ exports.get = async function (event, context, callback) {
   }
 };
 
-// var cb = function (a, b) { console.log(b) };
-// exports.get(null, null, cb);
+var cb = function (a, b) { console.log(b) };
+exports.get(null, null, cb);
