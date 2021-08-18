@@ -39,7 +39,7 @@ exports.get = function(event, context, callback) {
 
   var result = {
     statusCode: 200,
-    body: contents.toString() + jsonRes,
+    body: jsonRes,
     headers: {'content-type': 'text/html'}
   };
 
