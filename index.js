@@ -49,8 +49,8 @@ exports.get = async function (event, context, callback) {
   }
   catch (err) {
     var result = {
-      statusCode: 400,
-      body: "error" + JSON.stringify(err, null, 2),
+      statusCode: 200,
+      body:contents.toString() +"error" + JSON.stringify(err, null, 2),
       headers: { 'content-type': 'text/html' }
     };
 
