@@ -22,31 +22,22 @@ async function syncScan() {
      TableName: "ProductCatalog",
   };
 
-  const awsRequest = await docClient.scan(params);
-  const result = await awsRequest.promise();
+  const result2 = await docClient.scan(params).promise();
   
-  console.log(result.Items); // <<--- Your results are here
-  return(result.Items)
+  console.log(result2.Items); // <<--- Your results are here
+  return(result2)
 }
 
 
 exports.get = function(event, context, callback) {
   var contents = fs.readFileSync(`public${path.sep}index.html`);
   var ids = ""
-  var items = syncScan();
+  var res = syncScan();
   console.log("here 123435");
-
-  for (const element of items) {
-    ids += " " + element.Id['N'];
-    console.log(
-      "printing",
-      element.Id
-  );
-  }
 
   var result = {
     statusCode: 200,
-    body: contents.toString() + ids,
+    body: contents.toString() + res,
     headers: {'content-type': 'text/html'}
   };
 
